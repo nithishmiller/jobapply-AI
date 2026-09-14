@@ -601,6 +601,55 @@
     e.target.value = '';
   });
 
+  /* ================= user display name ================= */
+  function renderUser() {
+    const name = (localStorage.getItem('jobapply_display_name') || 'Guest').trim() || 'Guest';
+    const nameEl = $('#user-name'), av = $('#user-avatar');
+    if (!nameEl) return;
+    nameEl.textContent = name;
+    av.textContent = name.charAt(0).toUpperCase();
+    av.style.background = name === 'Guest' ? '' : 'linear-gradient(150deg, var(--gold), var(--gold-strong))';
+    const chip = $('#welcome-chip');
+    if (chip) {
+      if (name !== 'Guest') {
+        const first = name.split(/\s+/)[0];
+        const hour = new Date().getHours();
+        const time = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+        chip.textContent = `${time}, ${first} 👋`;
+        chip.hidden = false;
+      } else {
+        chip.hidden = true;
+      }
+    }
+  }
+  const nameEl = $('#user-name');
+  const editBtn = $('#user-edit-btn');
+  function startEdit() {
+    nameEl.contentEditable = 'true';
+    nameEl.focus();
+    const sel = document.getSelection();
+    sel.selectAllChildren(nameEl);
+  }
+  editBtn?.addEventListener('click', (e) => { e.stopPropagation(); startEdit(); });
+  $('#side-user')?.addEventListener('click', (e) => {
+    if (e.target.closest('#user-edit-btn') || nameEl.isContentEditable) return;
+    startEdit();
+  });
+  function commitName() {
+    if (!nameEl.isContentEditable) return;
+    nameEl.contentEditable = 'false';
+    let v = nameEl.textContent.replace(/\s+/g, ' ').trim().slice(0, 40);
+    if (!v) v = 'Guest';
+    nameEl.textContent = v;
+    localStorage.setItem('jobapply_display_name', v);
+    renderUser();
+  }
+  nameEl?.addEventListener('blur', commitName);
+  nameEl?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); nameEl.blur(); }
+    if (e.key === 'Escape') { renderUser(); nameEl.contentEditable = 'false'; }
+  });
+
   /* ================= misc ================= */
   function escapeHtml(s) {
     return String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -633,6 +682,7 @@
   /* ================= boot ================= */
   function boot() {
     load();
+    renderUser();
     refreshIdf(state.jobs);
     bindKanbanDnd();
     renderAll();

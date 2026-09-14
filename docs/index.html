@@ -92,12 +92,15 @@
                     <div class="upgrade-title">Pro tip</div>
                     <p>Upload a detailed CV — the matcher scores every job on skills, education &amp; visa fit.</p>
                 </div>
-                <div class="side-user">
-                    <div class="avatar" aria-hidden="true">J</div>
+                <div class="side-user" id="side-user" title="Click to edit your name">
+                    <div class="avatar" id="user-avatar" aria-hidden="true">J</div>
                     <div class="side-user-meta">
-                        <div class="side-user-name">Guest</div>
-                        <div class="side-user-mail">Local workspace</div>
+                        <div class="side-user-name" id="user-name" contenteditable="false" spellcheck="false">Guest</div>
+                        <div class="side-user-mail">This browser</div>
                     </div>
+                    <button class="icon-btn side-user-edit" id="user-edit-btn" aria-label="Edit your name" title="Edit your name">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+                    </button>
                 </div>
             </div>
         </aside>
@@ -113,6 +116,7 @@
                     <span class="crumb-root">JobApply AI</span>
                     <span class="crumb-sep">/</span>
                     <span id="crumb-current">Dashboard</span>
+                    <span class="welcome-chip" id="welcome-chip" hidden></span>
                 </div>
                 <div class="topbar-actions">
                     <span class="live-pill" title="Runs 100% in your browser · data stays on this device">
@@ -448,6 +452,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="./matcher.js?v=1"></script>
     <script src="./parser.js?v=1"></script>
-    <script src="./app.js?v=1"></script>
+    <script src="./app.js?v=2"></script>
 </body>
 </html>
