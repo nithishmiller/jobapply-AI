@@ -1296,6 +1296,14 @@ button { font-family: inherit; }
     padding: 4px 8px;
 }
 .auth-forgot:hover { color: var(--gold-1, #b08a3e); }
+.auth-code-input {
+    text-align: center;
+    letter-spacing: 0.5em;
+    font-size: 1.15rem;
+    font-weight: 600;
+    font-family: ui-monospace, Consolas, monospace;
+}
+.auth-btn[disabled] { opacity: 0.6; cursor: not-allowed; }
 .auth-help {
     width: min(410px, 100%);
     margin-top: 14px;

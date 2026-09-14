@@ -1,6 +1,8 @@
 # --- secrets: NEVER commit ---
 .auth_password
 .auth_secret
+.gmail_app
+.owner_email
 .env
 .env.*
 
