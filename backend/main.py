@@ -45,6 +45,11 @@ app.mount("/static", StaticFiles(directory="frontend"), name="static")
 # Must be installed after routers so /auth/* routes exist.
 install_auth(app)
 
+# Background auto-sync: pulls fresh jobs shortly after boot and daily.
+# Env: JOBAAPPLY_AUTO_SYNC=0 to disable, JOBAAPPLY_SYNC_INTERVAL_HOURS to change cadence.
+from endpoints.sync import start_auto_sync
+start_auto_sync()
+
 # Database dependency
 def get_db():
     db = SessionLocal()
@@ -105,6 +110,24 @@ async def upload_cv(file: UploadFile = File(...), db: Session = Depends(get_db))
     destination = UPLOAD_DIR / safe_name
 
     content = await file.read()
+
+    # Re-uploading the same file updates the existing entry instead of
+    # piling up duplicate rows (a user complaint from earlier testing).
+    from database.models import Match, Application
+    existing = db.query(CV).filter(CV.filename == safe_name).first()
+    if existing is not None:
+        destination.write_bytes(content)
+        replaced = {
+            "matches": db.query(Match).filter(Match.cv_id == existing.id).count(),
+            "applications": db.query(Application).filter(Application.cv_id == existing.id).count(),
+        }
+        db.query(Match).filter(Match.cv_id == existing.id).delete(synchronize_session=False)
+        db.query(Application).filter(Application.cv_id == existing.id).delete(synchronize_session=False)
+        db.delete(existing)
+        db.commit()
+    else:
+        replaced = None
+
     destination.write_bytes(content)
 
     def safe_print(*args, **kwargs):
@@ -160,12 +183,17 @@ async def upload_cv(file: UploadFile = File(...), db: Session = Depends(get_db))
         except Exception as exc:
             safe_print(f"Match scoring failed for CV {cv_record.id}: {exc}")
 
+    message = "CV uploaded successfully."
+    if replaced is not None:
+        message = f"CV '{safe_name}' re-uploaded — previous version and its {replaced['matches']} cached match(es) were replaced."
+
     return {
         "status": "uploaded",
         "cv_id": cv_record.id,
         "filename": safe_name,
         "size_bytes": len(content),
-        "message": "CV uploaded successfully.",
+        "message": message,
+        "replaced_existing": replaced is not None,
         "parsed": cv_record.status == "parsed",
         "matches_scored": matches_written,
         "raw_text_length": len(parsed_data.get("text", "")) if "parsed_data" in locals() else 0

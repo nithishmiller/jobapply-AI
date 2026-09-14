@@ -154,6 +154,7 @@
       save();
       renderAll();
       toast(`Sync complete — ${added} new · ${updated} updated · ${state.jobs.length} total`);
+      announceHighMatches();
     } catch (err) {
       console.error(err);
       toast('Sync failed: ' + err.message + ' — check your internet connection.', 'error');
@@ -164,6 +165,76 @@
   }
   $('#sync-btn')?.addEventListener('click', () => syncJobs());
   $('#settings-sync-btn')?.addEventListener('click', () => syncJobs());
+
+  /* ---------- high-match alerts (80%+) ---------- */
+  const HIGH_MATCH_KEY = 'jobapply_seen_high_matches';
+  const highPill = $('#high-match-pill');
+  const highCount = $('#high-match-count');
+
+  function seenHighMatchIds() {
+    try { return JSON.parse(localStorage.getItem(HIGH_MATCH_KEY) || '[]'); } catch (e) { return []; }
+  }
+  function markHighMatchesSeen(list) {
+    try {
+      const seen = new Set(seenHighMatchIds());
+      list.forEach((j) => seen.add(String(j.id)));
+      localStorage.setItem(HIGH_MATCH_KEY, JSON.stringify([...seen].slice(-200)));
+    } catch (e) { /* ignore */ }
+  }
+  function highMatches() {
+    /* prefer 80%+; fall back to 60%+ so the badge stays useful for every CV */
+    let scored = state.jobs
+      .map((j) => ({ job: j, m: jobScore(j) }))
+      .filter((x) => x.m && x.m.score >= 80);
+    if (!scored.length) {
+      scored = state.jobs
+        .map((j) => ({ job: j, m: jobScore(j) }))
+        .filter((x) => x.m && x.m.score >= 60);
+    }
+    return scored
+      .sort((a, b) => b.m.score - a.m.score)
+      .map((x) => ({ id: x.job.id, title: x.job.title, company: x.job.company, score: Math.round(x.m.score) }));
+  }
+  function announceHighMatches() {
+    if (!activeCv()) return;
+    const highs = highMatches();
+    if (!highs.length) { if (highPill) highPill.hidden = true; return; }
+    const threshold = highs[0].score >= 80 ? 80 : 60;
+    const seen = new Set(seenHighMatchIds());
+    const fresh = highs.filter((h) => !seen.has(String(h.id)));
+    if (fresh.length) {
+      const top = fresh[0];
+      toast(fresh.length === 1
+        ? `⭐ ${top.score}% match: ${top.title} at ${top.company || '—'}`
+        : `⭐ ${fresh.length} jobs scored ${top.score}%+ — top: ${top.title}`, 'success', 7000);
+      markHighMatchesSeen(fresh);
+    }
+    const cnt = $('#high-match-count');
+    const lbl = $('#high-match-label');
+    if (cnt) cnt.textContent = String(highs.length);
+    if (lbl) lbl.textContent = threshold + '%+';
+    if (highPill) highPill.hidden = false;
+  }
+  highPill?.addEventListener('click', () => {
+    /* use the threshold the badge is actually showing (80+ or 60+) */
+    const lbl = $('#high-match-label');
+    const filter = lbl && lbl.textContent.indexOf('60') !== -1 ? '60+' : '80+';
+    jobsState.filter = filter;
+    $$('#job-filters .chip').forEach((c) => c.classList.toggle('active', c.dataset.filter === filter));
+    showSection('jobs');
+    renderJobs();
+  });
+  /* badge on load, without toasting old news */
+  setTimeout(() => {
+    if (!activeCv()) return;
+    const highs = highMatches();
+    if (!highs.length) return;
+    const cnt = $('#high-match-count');
+    const lbl = $('#high-match-label');
+    if (cnt) cnt.textContent = String(highs.length);
+    if (lbl) lbl.textContent = (highs[0].score >= 80 ? '80%+' : '60%+');
+    if (highPill) highPill.hidden = false;
+  }, 600);
 
   /* ================= scoring ================= */
   function scoreJob(job) {
@@ -406,6 +477,16 @@
 
   /* ================= kanban ================= */
   const STATUSES = ['applied', 'interview', 'offer', 'rejected'];
+  const FOLLOWUP_DAYS = { applied: 14, interview: 10 };
+  function followUpNudge(app, statusKey) {
+    const minDays = FOLLOWUP_DAYS[statusKey];
+    if (!minDays) return null;
+    const ts = Date.parse(app.applied_at || '');
+    if (Number.isNaN(ts)) return null;
+    const days = Math.floor((Date.now() - ts) / 86400000);
+    if (days < minDays) return null;
+    return `${days} days — send a follow-up`;
+  }
   function renderKanban() {
     for (const st of STATUSES) {
       const body = $(`[data-kbody="${st}"]`);
@@ -414,13 +495,15 @@
       $('#k-' + st).textContent = items.length;
       body.innerHTML = '';
       for (const a of items) {
+        const nudge = followUpNudge(a, st);
         const el = document.createElement('div');
-        el.className = 'kcard';
+        el.className = 'kcard' + (nudge ? ' needs-followup' : '');
         el.draggable = true;
         el.dataset.appId = a.id;
         el.innerHTML = `
           <strong>${escapeHtml(a.title)}</strong>
           <span class="kcard-co">${escapeHtml(a.company)}</span>
+          ${nudge ? `<div class="ac-nudge" title="Applications this old often need a polite follow-up email">⏰ ${nudge}</div>` : ''}
           <div class="kcard-foot">
             <span>${fmtDate(a.applied_at)}</span>
             <button class="icon-btn kcard-del" aria-label="Remove application">✕</button>

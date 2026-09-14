@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session, joinedload
 from database.connection import SessionLocal
@@ -12,6 +14,17 @@ def get_db():
         yield db
     finally:
         db.close()
+
+
+def _parse_dt(value):
+    """Accept ISO strings (with or without Z) or datetime objects; None passes
+    through. Prevents 500s when API clients send JSON dates."""
+    if value is None or isinstance(value, datetime):
+        return value
+    try:
+        return datetime.fromisoformat(str(value).replace("Z", "+00:00")).replace(tzinfo=None)
+    except (ValueError, TypeError):
+        return None
 
 def _serialize_application(app: Application) -> dict:
     """Serialize an application with joined job + cv details for the dashboard."""
@@ -81,11 +94,14 @@ def create_application(application: dict, db: Session = Depends(get_db)):
     job = db.query(Job).filter(Job.id == application["job_id"]).first()
     if not job:
         raise HTTPException(status_code=400, detail="Invalid job_id")
+    applied_at = _parse_dt(application.get("applied_at"))
+    if application.get("applied_at") and applied_at is None:
+        raise HTTPException(status_code=400, detail="applied_at must be an ISO datetime string")
     db_application = Application(
         cv_id=application["cv_id"],
         job_id=application["job_id"],
         status=application.get("status", "applied"),
-        applied_at=application.get("applied_at"),
+        applied_at=applied_at or datetime.utcnow(),
         notes=application.get("notes"),
         cover_letter_text=application.get("cover_letter_text", None)
     )
@@ -122,7 +138,10 @@ def update_application(application_id: int, application: dict, db: Session = Dep
     if "status" in application:
         db_application.status = application["status"]
     if "applied_at" in application:
-        db_application.applied_at = application["applied_at"]
+        parsed = _parse_dt(application["applied_at"])
+        if application["applied_at"] and parsed is None:
+            raise HTTPException(status_code=400, detail="applied_at must be an ISO datetime string")
+        db_application.applied_at = parsed or db_application.applied_at
     if "notes" in application:
         db_application.notes = application["notes"]
     if "cover_letter_text" in application:

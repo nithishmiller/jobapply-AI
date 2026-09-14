@@ -1,8 +1,11 @@
+import os
+
 from sqlalchemy import create_engine, inspect, text
 from sqlalchemy.orm import sessionmaker
 from .models import Base
 
-DATABASE_URL = "sqlite:///./jobapply.db"
+# Env override lets tests (and cloud deploys) point somewhere else.
+DATABASE_URL = os.environ.get("DATABASE_URL", "sqlite:///./jobapply.db")
 
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
