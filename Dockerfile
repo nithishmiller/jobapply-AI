@@ -2,6 +2,10 @@ FROM python:3.13-slim
 
 WORKDIR /app
 
+# Compiler for packages without prebuilt py3.13 wheels (uvloop, SQLAlchemy)
+RUN apt-get update && apt-get install -y --no-install-recommends gcc \
+    && rm -rf /var/lib/apt/lists/*
+
 # Install dependencies first for layer caching
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
