@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="JobApply AI — AI-powered job application assistant for the German job market.">
+    <meta name="theme-color" content="#faf6ee">
+    <title>JobApply AI — Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=12">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23d5ab62'/%3E%3Cstop offset='1' stop-color='%238f6d2b'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='4' y='4' width='56' height='56' rx='16' fill='url(%23g)'/%3E%3Cpath d='M20 40c2.5 3.4 6.6 5.4 12 5.4 7.2 0 11.6-3.4 11.6-9.2 0-5-3.2-7.6-9.6-9l-3.8-.8c-3.9-.9-5.5-2.2-5.5-4.5 0-2.7 2.4-4.4 6.3-4.4 3.6 0 6.5 1.3 8.7 3.9' fill='none' stroke='white' stroke-width='4.5' stroke-linecap='round'/%3E%3C/svg%3E">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/icons/icon-32.png">
+    <link rel="apple-touch-icon" href="/static/icons/icon-180.png">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="JobApply AI">
+</head>
+<body>
+    <div class="bg-fx" aria-hidden="true">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <div class="app-shell">
+        <!-- ================= Sidebar ================= -->
+        <aside class="sidebar" id="sidebar" aria-label="Sidebar navigation">
+            <div class="brand">
+                <div class="brand-mark" aria-hidden="true">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2.5 14.6 8l6 .9-4.3 4.2 1 6-5.3-2.8L6.7 19l1-6L3.4 8.9l6-.9L12 2.5Z" fill="url(#bm)"/>
+                        <defs>
+                            <linearGradient id="bm" x1="3" y1="2" x2="21" y2="20">
+                                <stop stop-color="#fffdf8"/><stop offset="1" stop-color="#f2e3c4"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-name">JobApply</span>
+                    <span class="brand-ai">AI</span>
+                </div>
+                <button class="icon-btn sidebar-close" id="sidebar-close" aria-label="Close navigation">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <div class="cv-chip" id="active-cv-chip" hidden>
+                <span class="dot" aria-hidden="true"></span>
+                <span class="cv-chip-name" id="active-cv-name">CV</span>
+            </div>
+
+            <nav class="side-nav">
+                <span class="nav-caption">Menu</span>
+                <a href="#" class="nav-link active" data-section="dashboard" data-label="Dashboard">
+                    <span class="nav-ico" aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+                    </span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="nav-link" data-section="profile" data-label="Career Profile">
+                    <span class="nav-ico" aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg>
+                    </span>
+                    <span>Career Profile</span>
+                </a>
+                <a href="#" class="nav-link" data-section="jobs" data-label="Germany Jobs">
+                    <span class="nav-ico" aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="7" width="19" height="13" rx="2.5"/><path d="M8.5 7V5.5A2.5 2.5 0 0 1 11 3h2a2.5 2.5 0 0 1 2.5 2.5V7"/><path d="M2.5 12h19"/></svg>
+                    </span>
+                    <span>Germany Jobs</span>
+                </a>
+                <a href="#" class="nav-link" data-section="applications" data-label="Applications">
+                    <span class="nav-ico" aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 4.5a2 2 0 0 1 2-2h7L20 9v12.5a2 2 0 0 1-2 2H6.5a2 2 0 0 1-2-2v-17Z"/><path d="M14 2.5V9h6"/><path d="M9 14h6M9 17.5h4"/></svg>
+                    </span>
+                    <span>Applications</span>
+                </a>
+                <a href="#" class="nav-link" data-section="settings" data-label="Settings">
+                    <span class="nav-ico" aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.01a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
+                    </span>
+                    <span>Settings</span>
+                </a>
+            </nav>
+
+            <div class="side-foot">
+                <div class="upgrade-card">
+                    <div class="upgrade-title">Pro tip</div>
+                    <p>Upload a detailed CV — the matcher scores every job on skills, education &amp; visa fit.</p>
+                </div>
+                <div class="side-user">
+                    <div class="avatar" aria-hidden="true">J</div>
+                    <div class="side-user-meta">
+                        <div class="side-user-name">Guest</div>
+                        <div class="side-user-mail">Local workspace</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <div class="scrim" id="scrim" hidden></div>
+
+        <!-- ================= Main ================= -->
+        <div class="main-col">
+            <header class="topbar">
+                <button class="icon-btn nav-toggle" id="nav-toggle" aria-label="Open navigation" aria-expanded="false">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+                <div class="crumb">
+                    <span class="crumb-root">JobApply AI</span>
+                    <span class="crumb-sep">/</span>
+                    <span id="crumb-current">Dashboard</span>
+                </div>
+                <div class="topbar-actions">
+                    <span class="live-pill" title="SQLite · FastAPI backend">
+                        <span class="dot"></span>Live
+                    </span>
+                    <button class="btn btn-outline btn-sm" id="install-btn" hidden title="Install as an app on this device">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+                        <span>Install app</span>
+                    </button>
+                    <button class="btn btn-ghost btn-sm" id="sync-btn" title="Fetch live jobs from public job boards">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l2.5 2.5"/><path d="M3.05 11a9 9 0 0 1 15.2-4.7L21 9"/><path d="M21 3v6h-6"/><path d="M20.95 13a9 9 0 0 1-15.2 4.7L3 15"/><path d="M3 21v-6h6"/></svg>
+                        <span>Sync jobs</span>
+                    </button>
+                    <button class="icon-btn" id="refresh-btn" title="Refresh data" aria-label="Refresh data">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36L21 8"/><path d="M21 3v5h-5"/></svg>
+                    </button>
+                    <button class="btn btn-primary btn-sm" id="top-upload-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+                        <span>Upload CV</span>
+                    </button>
+                </div>
+            </header>
+
+            <main class="content" id="content">
+                <!-- ========== DASHBOARD ========== -->
+                <section id="dashboard" class="section active" aria-label="Dashboard">
+                    <div class="hero">
+                        <div class="hero-copy">
+                            <span class="hero-kicker"><span class="dot"></span> AI matching engine online</span>
+                            <h1>Land your next role in <span class="grad-text">Germany</span>, faster.</h1>
+                            <p>Upload a CV once — the engine parses it, scores every job on skills, education, language &amp; visa fit, and surfaces your best matches.</p>
+                            <div class="hero-cta">
+                                <button class="btn btn-primary" id="hero-upload-btn">
+                                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7 9m5-5 5 5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+                                    Upload your CV
+                                </button>
+                                <button class="btn btn-ghost" id="hero-jobs-btn">
+                                    Explore matches
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="hero-art" aria-hidden="true">
+                            <div class="ring r1"><span id="hero-ring-value">—</span><small>top match</small></div>
+                            <div class="ring r2"><span id="hero-ring-jobs">—</span><small>jobs scored</small></div>
+                            <div class="ring r3"><span id="hero-ring-apps">—</span><small>applications</small></div>
+                        </div>
+                    </div>
+
+                    <!-- Upload dropzone -->
+                    <div class="upload-zone" id="upload-zone" tabindex="0" role="button" aria-label="Upload CV: click or drop a PDF or DOCX file">
+                        <div class="uz-ico" aria-hidden="true">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4m0 0L7 9m5-5 5 5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+                        </div>
+                        <div class="uz-copy">
+                            <strong>Drop your CV here</strong>
+                            <span>PDF or DOCX · parsed instantly by the AI engine</span>
+                        </div>
+                        <span class="uz-badge">PDF / DOCX</span>
+                        <input type="file" id="cv-file" accept=".pdf,.docx" hidden>
+                    </div>
+
+                    <!-- Stats -->
+                    <div class="stats-grid">
+                        <div class="stat">
+                            <div class="stat-ico tint-green" aria-hidden="true">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2v11Z"/></svg>
+                            </div>
+                            <div class="stat-meta">
+                                <span class="stat-value" id="stat-cvs">0</span>
+                                <span class="stat-label">CVs uploaded</span>
+                            </div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-ico tint-blue" aria-hidden="true">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="7" width="19" height="13" rx="2.5"/><path d="M8.5 7V5.5A2.5 2.5 0 0 1 11 3h2a2.5 2.5 0 0 1 2.5 2.5V7"/><path d="M2.5 12h19"/></svg>
+                            </div>
+                            <div class="stat-meta">
+                                <span class="stat-value" id="stat-jobs">0</span>
+                                <span class="stat-label">Jobs scored</span>
+                            </div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-ico tint-violet" aria-hidden="true">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 2 2.4 5.9 6.1.5-4.7 4 1.5 6-5.3-3.3L6.7 18.4l1.5-6-4.7-4 6.1-.5L12 2Z"/></svg>
+                            </div>
+                            <div class="stat-meta">
+                                <span class="stat-value" id="stat-top">—</span>
+                                <span class="stat-label">Top match</span>
+                            </div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-ico tint-amber" aria-hidden="true">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 4.5a2 2 0 0 1 2-2h7L20 9v12.5a2 2 0 0 1-2 2H6.5a2 2 0 0 1-2-2v-17Z"/><path d="M14 2.5V9h6"/></svg>
+                            </div>
+                            <div class="stat-meta">
+                                <span class="stat-value" id="stat-apps">0</span>
+                                <span class="stat-label">Applications</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dash-cols">
+                        <div class="dash-col-l">
+                            <div class="sec-head">
+                                <h2>Your CVs</h2>
+                                <span class="sec-count" id="cvs-count">0</span>
+                            </div>
+                            <div id="cvs-list" class="cvs-list"></div>
+                        </div>
+                        <div class="dash-col-r">
+                            <div class="sec-head">
+                                <h2>Top matches</h2>
+                                <button class="btn btn-ghost btn-sm" data-goto="jobs">View all</button>
+                            </div>
+                            <div id="top-matches" class="top-matches"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ========== CAREER PROFILE ========== -->
+                <section id="profile" class="section" aria-label="Career profile">
+                    <div class="profile-hero">
+                        <div class="ph-ring">
+                            <svg viewBox="0 0 120 120" width="132" height="132" role="img" aria-label="Profile readiness">
+                                <circle class="ring-bg" cx="60" cy="60" r="52"/>
+                                <circle class="ring-fg" id="profile-ring" cx="60" cy="60" r="52"/>
+                                <text class="ring-num" x="60" y="58" text-anchor="middle" id="profile-ring-num">—</text>
+                                <text class="ring-sub" x="60" y="76" text-anchor="middle">ready</text>
+                            </svg>
+                        </div>
+                        <div class="ph-copy">
+                            <h2>Career Profile</h2>
+                            <p id="profile-summary">Parsed from your most recent CV. Everything the matching engine knows about you lives here.</p>
+                            <div class="ph-file" id="profile-file"></div>
+                        </div>
+                        <select id="profile-cv-select" class="select-field" aria-label="Choose which CV to inspect"></select>
+                    </div>
+
+                    <div class="profile-grid">
+                        <div class="profile-section" id="pf-contact"><h3>Contact</h3><div class="pf-body" data-empty="No contact details parsed."></div></div>
+                        <div class="profile-section" id="pf-skills"><h3>Skills</h3><div class="pf-body" data-empty="No skills parsed yet."></div></div>
+                        <div class="profile-section" id="pf-education"><h3>Education</h3><div class="pf-body" data-empty="No education entries parsed."></div></div>
+                        <div class="readiness" id="pf-readiness">
+                            <h3>Readiness</h3>
+                            <div class="pf-body" id="pf-readiness-body"></div>
+                            <ul class="tips" id="pf-tips"></ul>
+                        </div>
+                        <div class="profile-section wide" id="pf-experience"><h3>Experience</h3><div class="pf-body" data-empty="No experience entries parsed."></div></div>
+                    </div>
+                </section>
+
+                <!-- ========== JOBS ========== -->
+                <section id="jobs" class="section" aria-label="Germany jobs">
+                    <div class="sec-head">
+                        <h2>German Job Discovery</h2>
+                        <span class="sec-count" id="jobs-count">0</span>
+                    </div>
+                    <div class="jobs-toolbar">
+                        <label class="search-field">
+                            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+                            <input type="search" id="job-search" placeholder="Search by title, company or skill…" autocomplete="off">
+                        </label>
+                        <select id="job-sort" class="select-field" aria-label="Sort jobs">
+                            <option value="score_desc">Best match</option>
+                            <option value="date_desc">Newest</option>
+                            <option value="date_asc">Oldest</option>
+                            <option value="score_asc">Lowest score</option>
+                        </select>
+                    </div>
+                    <div class="chip-row" id="job-filters" role="group" aria-label="Quick filters">
+                        <button class="chip active" data-filter="all">All</button>
+                        <button class="chip" data-filter="remote">Remote</button>
+                        <button class="chip" data-filter="visa">Visa sponsorship</button>
+                        <button class="chip" data-filter="80+">80%+ matches</button>
+                        <button class="chip" data-filter="60+">60%+</button>
+                    </div>
+                    <div id="jobs-list" class="jobs-grid"></div>
+                    <div id="jobs-loading" class="state-block" hidden>
+                        <span class="spinner"></span><span>Scoring jobs against your CV…</span>
+                    </div>
+                    <div id="jobs-empty" class="state-block" hidden>
+                        <div class="state-ico" aria-hidden="true">🗂️</div>
+                        <p>No matching jobs found. Try clearing filters or uploading a CV.</p>
+                    </div>
+                    <div id="jobs-error" class="state-block error" hidden></div>
+                </section>
+
+                <!-- ========== APPLICATIONS ========== -->
+                <section id="applications" class="section" aria-label="Applications">
+                    <div class="sec-head">
+                        <h2>Your Applications</h2>
+                        <span class="sec-count" id="apps-count">0</span>
+                    </div>
+                    <div class="kanban" id="kanban">
+                        <div class="kcol" data-status="applied">
+                            <div class="kcol-head"><span class="kdot" style="--c:var(--copper)"></span>Applied <span class="kcount" id="k-applied">0</span></div>
+                            <div class="kcol-body" data-kbody="applied"></div>
+                        </div>
+                        <div class="kcol" data-status="interview">
+                            <div class="kcol-head"><span class="kdot" style="--c:var(--mauve)"></span>Interview <span class="kcount" id="k-interview">0</span></div>
+                            <div class="kcol-body" data-kbody="interview"></div>
+                        </div>
+                        <div class="kcol" data-status="offer">
+                            <div class="kcol-head"><span class="kdot" style="--c:var(--sage)"></span>Offer <span class="kcount" id="k-offer">0</span></div>
+                            <div class="kcol-body" data-kbody="offer"></div>
+                        </div>
+                        <div class="kcol" data-status="rejected">
+                            <div class="kcol-head"><span class="kdot" style="--c:var(--terracotta)"></span>Rejected <span class="kcount" id="k-rejected">0</span></div>
+                            <div class="kcol-body" data-kbody="rejected"></div>
+                        </div>
+                    </div>
+                    <div id="applications-loading" class="state-block" hidden><span class="spinner"></span><span>Loading applications…</span></div>
+                    <div id="applications-empty" class="state-block" hidden>
+                        <div class="state-ico" aria-hidden="true">📮</div>
+                        <p>No applications yet. Apply to a job from the Jobs tab and it will appear here.</p>
+                    </div>
+                    <div id="applications-error" class="state-block error" hidden></div>
+                </section>
+
+                <!-- ========== SETTINGS ========== -->
+                <section id="settings" class="section" aria-label="Settings">
+                    <div class="sec-head">
+                        <h2>Settings</h2>
+                    </div>
+
+                    <div class="settings-grid">
+                        <div class="profile-section">
+                            <h3>Data overview</h3>
+                            <div class="settings-stats" id="settings-stats">Loading…</div>
+                            <p class="settings-note">Live jobs sync from public boards (Arbeitnow · Remotive). Syncing again never duplicates — posts are matched by URL.</p>
+                            <button class="btn btn-outline" id="settings-sync-btn">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l2.5 2.5"/><path d="M3.05 11a9 9 0 0 1 15.2-4.7L21 9"/><path d="M21 3v6h-6"/><path d="M20.95 13a9 9 0 0 1-15.2 4.7L3 15"/><path d="M3 21v-6h6"/></svg>
+                                Sync jobs now
+                            </button>
+                        </div>
+
+                        <div class="profile-section">
+                            <h3>Access</h3>
+                            <p class="settings-note">This workspace is protected by a password. Change it by editing the <code>.auth_password</code> file in the project folder.</p>
+                            <a class="btn btn-ghost" href="/auth/logout">Sign out</a>
+                        </div>
+
+                        <div class="profile-section danger-zone">
+                            <h3>Danger zone</h3>
+                            <p class="settings-note">Permanently deletes <strong>everything</strong>: all CVs, all jobs (including synced ones), all match scores and all applications. Cannot be undone.</p>
+                            <button class="btn btn-danger" id="reset-data-btn">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M10 11v6M14 11v6"/></svg>
+                                Clear all data
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </main>
+
+            <footer class="app-foot">
+                <span>JobApply AI · local workspace · FastAPI + SQLite</span>
+                <span class="foot-sep">·</span>
+                <span>Made with 🤖 inside Freebuff</span>
+            </footer>
+        </div>
+    </div>
+
+    <!-- ========== Job detail modal ========== -->
+    <div class="modal" id="job-modal" aria-hidden="true">
+        <div class="modal-backdrop" data-close-modal></div>
+        <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="jm-title">
+            <button class="icon-btn modal-close" data-close-modal aria-label="Close job details">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+            <div class="modal-head">
+                <div class="company-badge" id="jm-badge" aria-hidden="true">A</div>
+                <div class="jm-title-wrap">
+                    <h3 id="jm-title">Job title</h3>
+                    <p class="jm-company" id="jm-company">Company · Location</p>
+                    <div class="jm-meta" id="jm-meta"></div>
+                </div>
+                <div class="ring jm-ring"><span id="jm-score">—</span><small>match</small></div>
+            </div>
+            <div class="jm-grid">
+                <div class="jm-block">
+                    <h4>Strengths</h4>
+                    <div class="jm-chips" id="jm-strengths"></div>
+                </div>
+                <div class="jm-block">
+                    <h4>Gaps</h4>
+                    <div class="jm-chips gap" id="jm-gaps"></div>
+                </div>
+                <div class="jm-block wide">
+                    <h4>Why this score</h4>
+                    <p id="jm-explanation" class="jm-expl"></p>
+                </div>
+                <div class="jm-block wide">
+                    <h4>About the role</h4>
+                    <p id="jm-desc" class="jm-desc"></p>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-ghost" data-close-modal>Close</button>
+                <button class="btn btn-outline" id="jm-save">Save job</button>
+                <button class="btn btn-primary" id="jm-apply">Apply with my CV</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirm dialog -->
+    <div class="modal confirm-modal" id="confirm-modal" aria-hidden="true">
+        <div class="modal-backdrop" data-confirm-cancel></div>
+        <div class="modal-card confirm-card" role="alertdialog" aria-modal="true" aria-labelledby="confirm-title" aria-describedby="confirm-msg">
+            <div class="confirm-ico" aria-hidden="true">!</div>
+            <h3 id="confirm-title">Are you sure?</h3>
+            <p id="confirm-msg">This action cannot be undone.</p>
+            <div class="modal-actions">
+                <button class="btn btn-ghost" data-confirm-cancel>Cancel</button>
+                <button class="btn btn-danger" id="confirm-ok">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Offline banner -->
+    <div class="offline-banner" id="offline-banner" hidden role="status">
+        <span aria-hidden="true">⚠</span> You're offline — jobs are shown from cache. Sync resumes automatically.
+    </div>
+
+    <!-- Toast host -->
+    <div class="toasts" id="toasts" aria-live="polite"></div>
+
+    <script src="/static/js/main.js?v=10"></script>
+</body>
+</html>
