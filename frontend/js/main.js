@@ -1200,6 +1200,19 @@ document.addEventListener('DOMContentLoaded', () => {
         nameEl.textContent = name;
         av.textContent = name.charAt(0).toUpperCase();
         av.style.background = name === 'Guest' ? '' : 'linear-gradient(150deg, var(--gold), var(--gold-strong))';
+        /* topbar greeting */
+        const chip = $('#welcome-chip');
+        if (chip) {
+            if (name !== 'Guest') {
+                const first = name.split(/\s+/)[0];
+                const hour = new Date().getHours();
+                const time = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+                chip.textContent = `${time}, ${first} 👋`;
+                chip.hidden = false;
+            } else {
+                chip.hidden = true;
+            }
+        }
     }
     const userBlock = $('#side-user');
     const nameEl = $('#user-name');
@@ -1230,6 +1243,10 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('jobapply_display_name', v);
         document.cookie = 'jobapply_user=; Max-Age=0; path=/';   /* cookie is only a default; local edit wins */
         renderUser();
+        const chip = $('#welcome-chip');
+        if (chip && v !== 'Guest') {
+            chip.hidden = false;
+        }
     }
     nameEl?.addEventListener('blur', commitName);
     nameEl?.addEventListener('keydown', (e) => {

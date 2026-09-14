@@ -3,14 +3,14 @@
    - static assets: cache-first with versioned URLs (?v=N)
    - never caches POST/PUT/DELETE or /sync traffic
 */
-const VERSION = 'jobapply-v15';
+const VERSION = 'jobapply-v16';
 const ASSET_CACHE = `${VERSION}-assets`;
 const PAGE_CACHE = `${VERSION}-pages`;
 
 const PRECACHE = [
     '/',
-    '/static/css/style.css?v=14',
-    '/static/js/main.js?v=15',
+    '/static/css/style.css?v=15',
+    '/static/js/main.js?v=16',
     '/static/icons/icon-192.png',
     '/static/icons/icon-512.png',
     '/static/assets/bg-silk.jpg',
