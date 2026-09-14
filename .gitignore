@@ -26,3 +26,6 @@ tools/CURRENT_URL.txt
 .DZone.Stats.json
 desktop.ini
 Thumbs.db
+
+# never publish the test CV copy
+/docs/test-cv.pdf
