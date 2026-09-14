@@ -108,7 +108,7 @@ def install_auth(app) -> None:
         return HTMLResponse(html)
 
     @router.post("/auth/login")
-    def login(password: str = Form("")):
+    def login(password: str = Form(""), display_name: str = Form("")):
         if hmac.compare_digest(password.strip(), _PASSWORD):
             resp = RedirectResponse("/", status_code=303)
             resp.set_cookie(
@@ -119,6 +119,18 @@ def install_auth(app) -> None:
                 samesite="lax",
                 path="/",
             )
+            # remember a display name (sanitized, non-httpOnly so the UI reads it)
+            name = "".join(
+                c for c in display_name.strip() if c.isalnum() or c in " .-_@"
+            ).strip()[:40]
+            if name:
+                resp.set_cookie(
+                    "jobapply_user",
+                    quote(name),
+                    max_age=60 * 60 * 24 * 90,
+                    samesite="lax",
+                    path="/",
+                )
             return resp
         return RedirectResponse("/auth/login?error=1", status_code=303)
 
@@ -199,7 +211,7 @@ _LOGIN_PAGE = r"""<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#faf6ee">
 <title>JobApply AI — Sign in</title>
-<link rel="stylesheet" href="/static/css/style.css?v=12">
+<link rel="stylesheet" href="/static/css/style.css?v=13">
 </head>
 <body>
 <div class="bg-fx" aria-hidden="true"></div>
@@ -214,6 +226,8 @@ _LOGIN_PAGE = r"""<!DOCTYPE html>
     <p class="auth-sub">Your private AI job-search workspace.<br>Enter the access password to continue.</p>
     %%ERROR%%
 
+    <input class="auth-input" id="auth-name" type="text" name="display_name"
+           placeholder="Your name (optional)" autocomplete="name" maxlength="40">
     <div class="auth-field">
       <input class="auth-input" id="auth-pw" type="password" name="password"
              placeholder="Access password" autocomplete="current-password" autofocus required>
