@@ -953,6 +953,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderKanban() {
+        /* follow-up nudges: applied >14 days, interviewing >10 days */
+        const FOLLOWUP_DAYS = { applied: 14, interview: 10 };
+        function followUpNudge(app, statusKey) {
+            const minDays = FOLLOWUP_DAYS[statusKey];
+            if (!minDays) return null;
+            const ts = app.applied_at ? Date.parse(app.applied_at) : NaN;
+            if (Number.isNaN(ts)) return null;
+            const days = Math.floor((Date.now() - ts) / 86400000);
+            if (days < minDays) return null;
+            return days + ' days — send a follow-up';
+        }
+
         const cols = { applied: [], interview: [], offer: [], rejected: [] };
         state.applications.forEach((a) => {
             const raw = (a.status || 'applied').toLowerCase();
@@ -971,7 +983,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             body.innerHTML = cols[statusKey].map((a) => {
                 const job = a.job || {};
-                return '<article class="app-card" draggable="true" data-app-id="' + a.id + '">' +
+                const nudge = followUpNudge(a, statusKey);
+                return '<article class="app-card' + (nudge ? ' needs-followup' : '') + '" draggable="true" data-app-id="' + a.id + '">' +
                     '<div class="ac-head">' +
                         '<div>' +
                             '<div class="ac-title">' + esc(job.title || ('Application #' + a.id)) + '</div>' +
@@ -979,6 +992,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         '</div>' +
                         '<span class="ac-status ' + statusKey + '">' + statusKey + '</span>' +
                     '</div>' +
+                    (nudge ? '<div class="ac-nudge" title="Applications this old often need a polite follow-up email">⏰ ' + nudge + '</div>' : '') +
                     '<div class="ac-foot">' +
                         '<span class="ac-cv" title="' + esc((a.cv && a.cv.filename) || '') + '">' +
                             esc((a.cv && a.cv.filename) || '') +
@@ -1074,6 +1088,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             state.jobsLoaded = false;
             await loadJobs(true);
+            announceHighMatches(await fetchHighMatches());
         } catch (err) {
             toast(err.message || 'Sync failed — check your connection', 'error');
         } finally {
@@ -1085,6 +1100,78 @@ document.addEventListener('DOMContentLoaded', () => {
     if (syncBtn) syncBtn.addEventListener('click', () => runSyncJobs(syncBtn));
     const settingsSyncBtn = $('#settings-sync-btn');
     if (settingsSyncBtn) settingsSyncBtn.addEventListener('click', () => runSyncJobs(settingsSyncBtn));
+
+    /* ---------- high-match alerts + welcome-back high matches ---------- */
+    const HIGH_MATCH_KEY = 'jobapply_seen_high_matches';
+    const badge = $('#high-match-pill');
+    const badgeCount = $('#high-match-count');
+    if (badge) {
+        badge.addEventListener('click', () => {
+            // use the threshold the badge is actually showing (80+ or 60+)
+            const lbl = $('#high-match-label');
+            const filter = lbl && lbl.textContent.indexOf('60') !== -1 ? '60+' : '80+';
+            state.filter = filter;
+            $$('.chip', $('#job-filters') || document).forEach((c) =>
+                c.classList.toggle('active', c.dataset.filter === filter)
+            );
+            setSection('jobs');
+            renderJobs();
+        });
+    }
+
+    function seenHighMatchIds() {
+        try { return JSON.parse(localStorage.getItem(HIGH_MATCH_KEY) || '[]'); } catch (e) { return []; }
+    }
+
+    function markHighMatchesSeen(list) {
+        try {
+            const seen = new Set(seenHighMatchIds());
+            list.forEach((m) => seen.add(String(m.job_id)));
+            localStorage.setItem(HIGH_MATCH_KEY, JSON.stringify(Array.from(seen).slice(-200)));
+        } catch (e) { /* private mode etc. — alerts just repeat, fine */ }
+    }
+
+    async function announceHighMatches(highMatches, opts) {
+        if (!highMatches.length) return;
+        const options = opts || {};
+        const seen = new Set(seenHighMatchIds());
+        const fresh = highMatches.filter((m) => !seen.has(String(m.job_id)));
+        if (options.toastOnFresh !== false && fresh.length) {
+            const top = fresh[0];
+            const label = fresh.length === 1
+                ? '⭐ ' + top.score + '% match: ' + (top.title || 'a role') + ' at ' + (top.company || '—')
+                : '⭐ ' + fresh.length + ' jobs scored ' + top.score + '%+ — top: ' + (top.title || 'a role');
+            toast(label, 'success', 7000);
+        }
+        const cnt = $('#high-match-count');
+        const lbl = $('#high-match-label');
+        if (cnt) cnt.textContent = String(highMatches.length);
+        if (lbl) lbl.textContent = (highMatches[0].score >= 80 ? '80%+' : '60%+');
+        badge.hidden = false;
+        if (!options.keepUnseen) markHighMatchesSeen(highMatches);
+    }
+
+    async function fetchHighMatches() {
+        if (!state.activeCvId) return [];
+        // prefer 80%+ matches; fall back to 60%+ so the badge stays useful
+        let recs = await api('/matches/recommendations/' + state.activeCvId + '?limit=100&min_score=80');
+        let highs = (recs.data || []).filter((r) => r && r.job);
+        if (!highs.length) {
+            recs = await api('/matches/recommendations/' + state.activeCvId + '?limit=100&min_score=60');
+            highs = (recs.data || []).filter((r) => r && r.job);
+        }
+        return highs.map((r) => ({
+            job_id: r.job.id, title: r.job.title, company: r.job.company,
+            location: r.job.location, score: r.match.score, url: r.job.url,
+        }));
+    }
+
+    async function checkFreshHighMatchesOnLoad() {
+        try {
+            const mapped = await fetchHighMatches();
+            announceHighMatches(mapped, { toastOnFresh: false, keepUnseen: true });
+        } catch (err) { /* silent — badge is a nice-to-have */ }
+    }
 
     /* ---------- PWA install + offline indicator ---------- */
     let deferredPrompt = null;
@@ -1261,6 +1348,7 @@ document.addEventListener('DOMContentLoaded', () => {
         await loadCVs();
         await loadApplications();
         await loadJobs(false);
+        checkFreshHighMatchesOnLoad();
         // Deep links from PWA shortcuts (?section=jobs|applications|profile)
         const params = new URLSearchParams(location.search);
         const target = params.get('section');

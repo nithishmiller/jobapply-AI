@@ -11,6 +11,7 @@ Improvements over v1:
 """
 import math
 import re
+from datetime import datetime
 from typing import Dict, List, Set, Tuple
 
 from database.models import CV, Job
@@ -92,7 +93,7 @@ def _cv_years(cv: CV) -> int:
     if not cv.experience or not isinstance(cv.experience, list):
         return 0
     years: List[int] = []
-    current_year = 2026
+    current_year = datetime.now().year
     for item in cv.experience:
         if not isinstance(item, dict):
             continue
@@ -119,7 +120,7 @@ def _cv_project_years(cv: CV) -> int:
     years = [int(y) for y in re.findall(r"\b(20[0-2]\d)\b", text)]
     if not years:
         return 0
-    current_year = 2026
+    current_year = datetime.now().year
     span = max(years) - min(years)
     # credit time since the most recent date (learning/projects stay current)
     recency = max(0, current_year - max(years))
