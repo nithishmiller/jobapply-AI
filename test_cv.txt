@@ -1,0 +1,15 @@
+John Doe
+Email: john@example.com
+Phone: 555-123-4567
+
+Experience:
+Software Engineer at ABC Corp (2020-2022)
+- Developed web applications using Python and JavaScript
+- Collaborated with cross-functional teams
+
+Education:
+Bachelor of Science in Computer Science
+University of Example (2016-2020)
+
+Skills:
+Python, JavaScript, SQL, React, Node.js

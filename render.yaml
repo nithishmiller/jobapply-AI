@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: jobapply-ai
+    runtime: python
+    plan: free
+    region: frankfurt   # closest to the German job market this app targets
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.6
+      - key: JOBAAPPLY_AUTH_PASSWORD
+        sync: false   # set in the Render dashboard — never stored in git
+      - key: JOBAAPPLY_AUTH_SECRET
+        generateValue: true   # Render generates a random secret on first deploy

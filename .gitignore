@@ -1,0 +1,28 @@
+# --- secrets: NEVER commit ---
+.auth_password
+.auth_secret
+.env
+.env.*
+
+# --- user data: stays local ---
+*.db
+*.db-journal
+uploads/
+!uploads/.gitkeep
+
+# --- python ---
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# --- tooling / logs ---
+.freebuff/
+*.log
+tools/bin/
+tools/CURRENT_URL.txt
+
+# --- OS cruft ---
+.DZone.Stats.json
+desktop.ini
+Thumbs.db
