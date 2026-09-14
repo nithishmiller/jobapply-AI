@@ -1,7 +1,7 @@
 /* JobApply AI (GitHub Pages) service worker.
    App-shell caching: HTML (network-first) + assets (cache-first).
    User data lives in localStorage — never cached here. */
-const VERSION = 'jobapply-pages-v1';
+const VERSION = 'jobapply-pages-v2';
 const ASSETS = `${VERSION}-assets`;
 const PAGES = `${VERSION}-pages`;
 
@@ -11,7 +11,7 @@ const PRECACHE = [
   './style.css',
   './matcher.js',
   './parser.js',
-  './app.js?v=1',
+  './app.js?v=2',
   './manifest.webmanifest',
   './icons/icon-192.png',
   './icons/icon-512.png',
