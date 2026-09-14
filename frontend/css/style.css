@@ -265,6 +265,13 @@ button { font-family: inherit; }
 }
 .side-user:hover .side-user-edit { opacity: 0.7; }
 .side-user-edit:hover { opacity: 1 !important; background: var(--gold-soft); }
+.side-user-logout {
+    width: 28px; height: 28px; border-radius: 8px;
+    color: var(--text-3);
+    opacity: 0; transition: opacity 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+.side-user:hover .side-user-logout { opacity: 0.7; }
+.side-user-logout:hover { opacity: 1 !important; background: var(--terracotta-soft); color: #a84a30; }
 .side-user-name[contenteditable="true"] {
     outline: none;
     border-bottom: 2px dashed var(--gold-line);
