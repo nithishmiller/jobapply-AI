@@ -1188,9 +1188,53 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    /* ---------- user display name (sidebar footer) ---------- */
+    function readUserCookie() {
+        const m = document.cookie.match(/(?:^|; )jobapply_user=([^;]*)/);
+        return m ? decodeURIComponent(m[1]) : '';
+    }
+    function renderUser() {
+        const name = (localStorage.getItem('jobapply_display_name') || readUserCookie() || 'Guest').trim() || 'Guest';
+        const nameEl = $('#user-name'), av = $('#user-avatar');
+        if (!nameEl) return;
+        nameEl.textContent = name;
+        av.textContent = name.charAt(0).toUpperCase();
+        av.style.background = name === 'Guest' ? '' : 'linear-gradient(150deg, var(--gold), var(--gold-strong))';
+    }
+    const userBlock = $('#side-user');
+    const nameEl = $('#user-name');
+    $('#user-edit-btn')?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        nameEl.contentEditable = 'true';
+        nameEl.focus();
+        document.getSelection().selectAllChildren(nameEl);
+    });
+    userBlock?.addEventListener('click', (e) => {
+        if (e.target.closest('#user-edit-btn') || nameEl.isContentEditable) return;
+        nameEl.contentEditable = 'true';
+        nameEl.focus();
+        document.getSelection().selectAllChildren(nameEl);
+    });
+    function commitName() {
+        if (!nameEl.isContentEditable) return;
+        nameEl.contentEditable = 'false';
+        let v = nameEl.textContent.replace(/\s+/g, ' ').trim().slice(0, 40);
+        if (!v) v = 'Guest';
+        nameEl.textContent = v;
+        localStorage.setItem('jobapply_display_name', v);
+        document.cookie = 'jobapply_user=; Max-Age=0; path=/';   /* cookie is only a default; local edit wins */
+        renderUser();
+    }
+    nameEl?.addEventListener('blur', commitName);
+    nameEl?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') { e.preventDefault(); nameEl.blur(); }
+        if (e.key === 'Escape') { renderUser(); nameEl.contentEditable = 'false'; }
+    });
+
     /* ---------- boot ---------- */
     (async function boot() {
         initKanbanDnd();
+        renderUser();
         await loadCVs();
         await loadApplications();
         await loadJobs(false);
