@@ -1209,11 +1209,17 @@ document.addEventListener('DOMContentLoaded', () => {
         nameEl.focus();
         document.getSelection().selectAllChildren(nameEl);
     });
-    userBlock?.addEventListener('click', (e) => {
+    userBlock?.addEventListener('click', async (e) => {
         if (e.target.closest('#user-edit-btn') || nameEl.isContentEditable) return;
         nameEl.contentEditable = 'true';
         nameEl.focus();
         document.getSelection().selectAllChildren(nameEl);
+    });
+    $('#logout-btn')?.addEventListener('click', async (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const ok = await askConfirm('Sign out?', 'You will need your password to sign back in on this device.', 'Yes, sign out');
+        if (ok) window.location.href = '/auth/logout';
     });
     function commitName() {
         if (!nameEl.isContentEditable) return;
