@@ -1,0 +1,26 @@
+/* Layer 2: Semantic tokens mapping purpose aliases */
+:root {
+  --color-primary-accent: var(--color-cyan-500);
+  --color-primary-hover: var(--color-cyan-400);
+  --color-secondary-accent: var(--color-blue-500);
+  --color-glow: var(--color-glow-cyan);
+
+  --surface-0-bg: var(--color-neutral-950);
+  --surface-1-bg: var(--color-neutral-900);
+  --surface-2-bg: var(--color-neutral-800);
+  --surface-3-bg: var(--color-neutral-800);
+  --surface-4-bg: var(--color-neutral-950);
+}
+
+.dark {
+  --color-primary-accent: var(--color-cyan-500);
+  --color-primary-hover: var(--color-cyan-400);
+  --color-secondary-accent: var(--color-blue-500);
+  --color-glow: var(--color-glow-cyan);
+
+  --surface-0-bg: var(--color-neutral-950);
+  --surface-1-bg: var(--color-neutral-900);
+  --surface-2-bg: var(--color-neutral-800);
+  --surface-3-bg: var(--color-neutral-800);
+  --surface-4-bg: var(--color-neutral-950);
+}

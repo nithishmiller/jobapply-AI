@@ -1,0 +1,83 @@
+/* Accessibility & Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  :root {
+    --stagger-base: 0ms;
+    --stagger-item: 0ms;
+    --stagger-group: 0ms;
+  }
+}
+
+@media (prefers-contrast: high) {
+  :root {
+    --border-opacity-base: 0.3;
+    --border-opacity-elevated: 0.5;
+    --border-opacity-glass: 0.8;
+    --ring-width: 3px;
+  }
+
+  .surface-1 {
+    border-width: 1px;
+    border-style: solid;
+    border-color: oklch(1 0 0 / var(--border-opacity-elevated));
+  }
+
+  .surface-2 {
+    border-width: 1px;
+    border-style: solid;
+    border-color: oklch(1 0 0 / var(--border-opacity-elevated));
+  }
+
+  .surface-3 {
+    border-width: 2px;
+    border-style: solid;
+    border-color: oklch(0.68 0.2 195 / var(--border-opacity-glass));
+  }
+
+  .surface-4 {
+    border-width: 2px;
+    border-style: solid;
+    border-color: oklch(0.68 0.2 195 / var(--border-opacity-glass));
+  }
+}
+
+/* Focus visible styles */
+:focus-visible {
+  outline: none;
+  ring: var(--ring-width, 2px) solid var(--color-primary-accent);
+  ring-offset: 2px;
+  ring-offset-color: var(--surface-0-bg);
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-primary-accent);
+  color: var(--color-neutral-0);
+  border-radius: var(--radius-md);
+  z-index: var(--z-tooltip);
+  font-weight: 500;
+}
+
+.skip-link:focus {
+  top: var(--space-4);
+}
+
+/* High contrast mode focus */
+@media (prefers-contrast: high) {
+  :focus-visible {
+    ring-width: 3px;
+  }
+}

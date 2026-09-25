@@ -1,0 +1,74 @@
+/* Layer 1: Raw OKLCH color values, spacing, typometry */
+:root {
+  /* Color primitives (OKLCH) */
+  --color-neutral-950: oklch(0.145 0 0);
+  --color-neutral-900: oklch(0.205 0 0);
+  --color-neutral-800: oklch(0.269 0 0);
+  --color-neutral-400: oklch(0.708 0 0);
+  --color-neutral-0: oklch(1 0 0);
+
+  --color-cyan-500: oklch(0.68 0.2 195);
+  --color-cyan-400: oklch(0.75 0.18 195);
+  --color-blue-500: oklch(0.58 0.18 255);
+
+  --color-glow-cyan: oklch(0.75 0.2 195 / 0.4);
+
+  /* Surface primitives */
+  --color-bg-base: oklch(1 0 0);
+  --color-bg-elevated: oklch(0.205 0 0);
+  --color-bg-glass: oklch(0.269 0.1 250 / 0.3);
+  --color-bg-modal: oklch(0.269 0 0);
+
+  /* Typography primitives */
+  --font-display: "Space Grotesk Variable", sans-serif;
+  --font-body: "DM Sans Variable", sans-serif;
+  --font-mono: "JetBrains Mono Variable", monospace;
+
+  /* Spacing primitives (4px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-12: 48px;
+
+  /* Radius primitives */
+  --radius: 0.625rem;
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Duration primitives */
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+  --duration-slow: 350ms;
+  --duration-cinematic: 700ms;
+
+  /* Easing primitives */
+  --ease-linear: linear;
+  --ease-in: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0.0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-expo-out: cubic-bezier(0.95, 0.05, 0.795, 0.035);
+  --ease-expo-in-out: cubic-bezier(1, 0, 0, 1);
+
+  /* Stagger primitives */
+  --stagger-base: 30ms;
+  --stagger-item: 50ms;
+  --stagger-group: 100ms;
+
+  /* Z-index primitives */
+  --z-base: 0;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-overlay: 300;
+  --z-modal-backdrop: 400;
+  --z-modal: 500;
+  --z-popover: 600;
+  --z-tooltip: 700;
+}

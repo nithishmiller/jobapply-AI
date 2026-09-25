@@ -1,0 +1,20 @@
+/* Motion & Transition System */
+.transition-fast {
+  transition-duration: var(--duration-fast);
+  transition-timing-function: var(--ease-out);
+}
+
+.transition-normal {
+  transition-duration: var(--duration-normal);
+  transition-timing-function: var(--ease-in-out);
+}
+
+.transition-slow {
+  transition-duration: var(--duration-slow);
+  transition-timing-function: var(--ease-in-out);
+}
+
+.transition-cinematic {
+  transition-duration: var(--duration-cinematic);
+  transition-timing-function: var(--ease-expo-out);
+}
