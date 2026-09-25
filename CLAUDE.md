@@ -1,83 +1,81 @@
-# JobApply AI � Engineering Rules
+﻿# JobApply AI — Permanent Engineering Rules
 
 ## Product
-- Germany-first AI career and job application assistant.
-- Primary flow: CV ? AI Intelligence ? Germany ? Cities ? Jobs ? AI Matching ? Application Generation ? Applications ? Tracking ? CTA.
-- Default country: Germany.
-- Currency: EUR.
-- Support German language proficiency and visa sponsorship indicators.
+JobApply AI is a Germany-first AI career and job application assistant.
+
+Primary flow:
+CV → AI Intelligence → Germany → Cities → Jobs → AI Matching → Application Generation → Applications → Tracking → CTA
 
 ## Visual Direction
-- Dark cinematic.
-- Deep black/navy foundation.
-- Cyan/blue accents and controlled glow.
-- Premium, high-end product-showcase aesthetic.
-- Large visual compositions, layered depth, blur and sophisticated typography.
-- Motion, image/video reveals, scroll-driven scenes and interactive galleries.
-- 3D/WebGL/shaders only where they materially improve the experience.
-- Fully responsive and mobile-first where appropriate.
+- Dark cinematic
+- Deep black/navy foundation
+- Cyan/blue accents
+- Glowing interfaces
+- Large visual compositions
+- Layered depth and blur
+- Sophisticated typography
+- Premium editorial/product-showcase feel
+- Motion, image/video reveals and scroll-driven scenes where justified
+- 3D/WebGL/shaders only when they materially improve the experience
+- Fully responsive
 
 ## Frontend
 - React
 - TypeScript
 - Vite
 - Tailwind CSS v4
-- shadcn/ui with Base UI
+- shadcn/ui
+- Base UI
 - Motion
-- GSAP
 - Lenis
-- Three.js
-- React Three Fiber
-- Drei
-- GLSL/custom shaders where justified
+- GSAP
+- Three.js / React Three Fiber / Drei when justified
 
 ## Backend
 - Python
 - FastAPI
 - Uvicorn
-- Django only when specifically required
-- PostgreSQL for production
-- SQLite acceptable for local development
-- External AI APIs only
+- PostgreSQL
+- REST APIs
+- External AI APIs
 
 ## Engineering Rules
+- Keep the application runnable.
 - Do not randomly redesign working sections.
 - Do not change architecture without approval.
 - Do not install dependencies without approval.
 - Do not create duplicate components.
-- Prefer reusable components and clear separation of concerns.
-- Keep the application runnable after every meaningful change.
-- Preserve existing functionality while improving it.
-- Optimize for performance, accessibility, responsive behavior and security.
-- Never touch unrelated projects or directories.
-- Active project: F:\AI Task\AI JOB
-- Never touch G:\sample\proj.
+- Reuse existing components and utilities when appropriate.
+- Keep TypeScript strict and clean.
+- Prefer maintainable production code over unnecessary complexity.
+- Preserve responsive behavior.
+- Consider accessibility and performance in every feature.
+- Do not introduce unnecessary local infrastructure.
+- Do not install local LLMs or model weights.
+- Use external AI APIs for inference.
 
-## Quality Gate
-CODE ? TYPECHECK ? LINT ? BUILD ? PLAYWRIGHT ? LIGHTHOUSE ? VISUAL QA ? RESPONSIVE QA ? PERFORMANCE ? SECURITY ? SHIP
+## Project Boundary
+The active project is ONLY:
 
-## AI Coding
-- Claude Code is the primary coding agent.
-- Codex CLI is the secondary coding/review agent.
-- FreeLLMAPI provides the local API gateway.
-- Use project documentation as the source of truth.
-- Do not expose or request API keys in source files or chat.
+F:\AI Task\AI JOB
 
-## Design References
-Use reference sites and visual research as inspiration, not as reasons to introduce unnecessary dependencies:
-- Google Stitch
-- Refero
-- React Bits
-- Aceternity UI
-- 21st.dev
-- Watermelon UI
-- Uiverse
-- Layers
-- Aura.build
+Never touch or modify:
+G:\sample\proj
+
+## Quality Pipeline
+CODE → TYPECHECK → LINT → BUILD → PLAYWRIGHT → LIGHTHOUSE → VISUAL QA → RESPONSIVE QA → PERFORMANCE → SECURITY → SHIP
+
+## Security
+- Never expose API keys or secrets.
+- Never commit .env files or credentials.
+- Validate external input.
+- Apply security practices appropriate for production APIs.
+
+## Git
+- Make focused commits.
+- Do not rewrite history unless explicitly requested.
+- Do not force-push unless explicitly approved.
+- Keep the working tree understandable.
 
 ## Important
-Before making a large architectural or visual change:
-1. Inspect the existing implementation.
-2. Explain the intended change.
-3. Keep the change scoped.
-4. Verify build and lint afterward.
+Before making substantial architectural, visual, dependency, or structural changes, explain the proposed change and wait for approval.
