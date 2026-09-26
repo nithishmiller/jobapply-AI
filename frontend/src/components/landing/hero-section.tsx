@@ -5,6 +5,8 @@ import { ArrowRight, Cpu, ShieldCheck, Globe, Lightning } from "@phosphor-icons/
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { GlowWrapper } from "@/components/ui/glow-wrapper"
+import { CursorTiltCard } from "@/components/motion/cursor-tilt-card"
+import { HeroNeuralCanvas } from "@/components/canvas/hero-neural-canvas"
 import { variants } from "@/lib/motion"
 
 const trustMetrics = [
@@ -17,6 +19,9 @@ const trustMetrics = [
 export function HeroSection() {
   return (
     <section id="hero" className="relative min-h-[90vh] flex flex-col items-center justify-center pt-32 overflow-hidden">
+      {/* Background neural canvas */}
+      <HeroNeuralCanvas />
+
       {/* Background radial glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full pointer-events-none -z-10 bg-[radial-gradient(circle_at_50%_30%,oklch(0.68_0.2_195_/_0.15)_0%,transparent_70%)]" />
       <div className="absolute inset-0 pointer-events-none -z-10 opacity-5 pattern" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg viewBox=\'0 0 40 40\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' stroke=\'%23ffffff\' stroke-width=\'0.1\'%3E%3Cpath d=\'M0 0h40v40H0V0z\'/%3E%3C/g%3E%3C/svg%3E")' }} />
@@ -63,51 +68,53 @@ export function HeroSection() {
         {/* The Command Card Visual Anchor */}
         <motion.div variants={variants.scrollReveal} initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} className="w-full max-w-5xl mt-20">
           <GlowWrapper intensity="default" className="p-1 rounded-2xl">
-            <Card variant="glass" padding="none" className="overflow-hidden aspect-video md:aspect-[21/9] border-white/5 flex flex-col relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-blue-500/5" />
-              <div className="absolute top-4 left-4 right-4 flex justify-between">
-                <div className="flex items-center gap-2 surface-2 px-3 py-1 rounded-lg border border-white/5">
-                  <div className="size-1.5 rounded-full bg-green-500" />
-                  <span className="text-xs font-mono text-neutral-300">LIVE SCAN</span>
-                </div>
-                <div className="flex items-center gap-2 surface-2 px-3 py-1 rounded-lg border border-white/5">
-                  <span className="text-xs font-mono text-neutral-400">00:42</span>
-                </div>
-              </div>
-              <div className="z-10 flex flex-col items-center justify-center flex-1 space-y-8 p-8">
-                <div className="flex flex-col items-center space-y-2">
-                  <div className="text-xs font-mono text-primary tracking-wider">CANDIDATE PROFILE</div>
-                  <div className="text-2xl font-display font-bold text-neutral-0">Alex M. — Senior Full-Stack Engineer</div>
-                  <div className="text-sm text-neutral-400">React • TypeScript • Node.js • PostgreSQL • 7y exp</div>
-                </div>
-                <div className="flex flex-col items-center space-y-3 w-full max-w-md">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-neutral-300">Match Confidence</span>
-                    <span className="font-display font-bold text-primary">94%</span>
+            <CursorTiltCard intensity={10}>
+              <Card variant="glass" padding="none" className="overflow-hidden aspect-video md:aspect-[21/9] border-white/5 flex flex-col relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-blue-500/5" />
+                <div className="absolute top-4 left-4 right-4 flex justify-between">
+                  <div className="flex items-center gap-2 surface-2 px-3 py-1 rounded-lg border border-white/5">
+                    <div className="size-1.5 rounded-full bg-green-500" />
+                    <span className="text-xs font-mono text-neutral-300">LIVE SCAN</span>
                   </div>
-                  <div className="w-full h-1.5 surface-2 rounded-full overflow-hidden">
-                    <motion.div
-                      initial={{ width: "0%" }}
-                      animate={{ width: "94%" }}
-                      transition={{ duration: 1.5, ease: "easeOut", delay: 0.5 }}
-                      className="h-full bg-gradient-to-r from-primary to-blue-400"
-                    />
+                  <div className="flex items-center gap-2 surface-2 px-3 py-1 rounded-lg border border-white/5">
+                    <span className="text-xs font-mono text-neutral-400">00:42</span>
                   </div>
                 </div>
-                <div className="flex items-center gap-6 text-sm text-neutral-400">
-                  <div className="flex items-center gap-1.5"><Globe size={16} /> Berlin, Munich, Hamburg</div>
-                  <div className="flex items-center gap-1.5"><ShieldCheck size={16} /> Visa Sponsorship Available</div>
-                  <div className="flex items-center gap-1.5"><Lightning size={16} /> 42 Active Matches</div>
+                <div className="z-10 flex flex-col items-center justify-center flex-1 space-y-8 p-8">
+                  <div className="flex flex-col items-center space-y-2">
+                    <div className="text-xs font-mono text-primary tracking-wider">CANDIDATE PROFILE</div>
+                    <div className="text-2xl font-display font-bold text-neutral-0">Alex M. — Senior Full-Stack Engineer</div>
+                    <div className="text-sm text-neutral-400">React • TypeScript • Node.js • PostgreSQL • 7y exp</div>
+                  </div>
+                  <div className="flex flex-col items-center space-y-3 w-full max-w-md">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-neutral-300">Match Confidence</span>
+                      <span className="font-display font-bold text-primary">94%</span>
+                    </div>
+                    <div className="w-full h-1.5 surface-2 rounded-full overflow-hidden">
+                      <motion.div
+                        initial={{ width: "0%" }}
+                        animate={{ width: "94%" }}
+                        transition={{ duration: 1.5, ease: "easeOut", delay: 0.5 }}
+                        className="h-full bg-gradient-to-r from-primary to-blue-400"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-6 text-sm text-neutral-400">
+                    <div className="flex items-center gap-1.5"><Globe size={16} /> Berlin, Munich, Hamburg</div>
+                    <div className="flex items-center gap-1.5"><ShieldCheck size={16} /> Visa Sponsorship Available</div>
+                    <div className="flex items-center gap-1.5"><Lightning size={16} /> 42 Active Matches</div>
+                  </div>
                 </div>
-              </div>
-              <div className="absolute bottom-4 left-4 right-4 flex justify-center">
-                <div className="flex items-center gap-4 surface-2 px-4 py-2 rounded-lg border border-white/5 text-xs">
-                  <span className="text-primary">●</span>
-                  <span className="text-neutral-300">Analyzing German market requirements...</span>
-                  <span className="text-neutral-500">CEFR: C1 • DIN 5008: Valid</span>
+                <div className="absolute bottom-4 left-4 right-4 flex justify-center">
+                  <div className="flex items-center gap-4 surface-2 px-4 py-2 rounded-lg border border-white/5 text-xs">
+                    <span className="text-primary">●</span>
+                    <span className="text-neutral-300">Analyzing German market requirements...</span>
+                    <span className="text-neutral-500">CEFR: C1 • DIN 5008: Valid</span>
+                  </div>
                 </div>
-              </div>
-            </Card>
+              </Card>
+            </CursorTiltCard>
           </GlowWrapper>
         </motion.div>
       </div>
