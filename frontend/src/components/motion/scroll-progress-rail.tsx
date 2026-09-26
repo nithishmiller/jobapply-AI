@@ -2,17 +2,6 @@
 
 import { useScroll, useTransform, motion } from "motion/react"
 
-const sectionIds = [
-  { id: "hero", label: "01" },
-  { id: "cv-intelligence", label: "02" },
-  { id: "germany-engine", label: "03" },
-  { id: "city-network", label: "04" },
-  { id: "ai-match-matrix", label: "05" },
-  { id: "application-studio", label: "06" },
-  { id: "command-tracker", label: "07" },
-  { id: "cta", label: "08" },
-] as const
-
 export function ScrollProgressRail() {
   const { scrollYProgress } = useScroll()
 
@@ -22,39 +11,25 @@ export function ScrollProgressRail() {
     ["0%", "100%"]
   )
 
-  const activeIndex = useTransform(
-    scrollYProgress,
-    [0, 1],
-    [0, sectionIds.length - 1]
-  )
-
   return (
-    <motion.div
-      className="fixed right-6 top-1/2 -translate-y-1/2 z-[200] flex flex-col items-center gap-2"
-      style={{ height: "60vh", maxHeight: "500px" }}
+    <div
+      className="fixed right-6 top-1/2 -translate-y-1/2 z-[200] hidden lg:flex flex-col items-center gap-4 bg-black/20 backdrop-blur-md px-3 py-6 rounded-full border border-white/5 shadow-[0_0_30px_rgba(0,0,0,0.5)]"
+      style={{ height: "400px" }}
     >
-      <div className="text-[10px] font-mono text-primary uppercase tracking-wider mb-4">STAGE</div>
-      <motion.div
-        className="relative w-1 h-full bg-white/5 rounded-full overflow-hidden"
-      >
+      <div className="text-[9px] font-mono text-primary uppercase tracking-widest leading-none">STAGE</div>
+
+      <div className="relative w-[2px] h-[250px] bg-white/10 rounded-full overflow-hidden">
         <motion.div
-          className="absolute left-0 w-full bg-primary rounded-full shadow-[0_0_15px_rgba(108,198,212,0.6)]"
+          className="absolute top-0 left-0 w-full bg-primary rounded-full shadow-[0_0_15px_rgba(108,198,212,0.8)]"
           style={{ height: progressY }}
         />
-      </motion.div>
-      <div className="flex flex-col gap-4 text-[10px] font-mono text-neutral-400">
-        {sectionIds.map((_, i) => (
-          <motion.span
-            key={i}
-            className="text-center w-10"
-            style={{ color: activeIndex }}
-            animate={{ opacity: [0.3, 1, 0.3], color: ["text-neutral-400", "text-primary", "text-neutral-400"] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            {sectionIds[i].label}
-          </motion.span>
-        ))}
       </div>
-    </motion.div>
+
+      <div className="flex flex-col justify-between h-[60px] text-[10px] font-mono text-neutral-400">
+        <span className="text-center font-bold text-primary animate-pulse">01</span>
+        <div className="w-1.5 h-1.5 rounded-full bg-primary/30 mx-auto" />
+        <span className="text-center text-neutral-500">08</span>
+      </div>
+    </div>
   )
 }
